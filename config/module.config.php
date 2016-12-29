@@ -3,7 +3,7 @@ return array(
     'module' => array(
         'Update' => array(
             'name' => 'Update',
-            'version' => '1.0.3',
+            'version' => '1.0.4',
             'install' => array()
         ),
     ),
