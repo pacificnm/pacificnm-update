@@ -1,0 +1,79 @@
+<?php
+/**
+* Pacific NM (https://www.pacificnm.com)
+*
+* @link      https://github.com/pacificnm/pacificnm-update for the canonical source repository
+* @copyright Copyright (c) 20011-2016 Pacific NM USA Inc. (https://www.pacificnm.com)
+* @license BSD-3-Clause
+*/
+?>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="box box-primary">
+			<div class="box-header with-border">
+				<h3 class="box-title">
+					<i class="<?php echo $this->layout()->pageIcon; ?>" aria-hidden="true"></i>
+					<?php echo $this->translate($this->layout()->pageTitle); ?> 
+					<small><?php echo $this->translate("Page"); ?>: <?php echo $this->page; ?></small>
+				</h3>
+				<div class="box-tools">
+					<a href="<?php echo $this->url("update-check"); ?>" title="<?php echo $this->translate("Check");?>" class="btn btn-box-tool">
+						<i class="fa fa-download"></i> <?php echo $this->translate("Check");?>
+					</a>
+				</div>
+			</div>
+			<?php if($this->paginator->count() == 0): ?>
+			<div class="box-body">
+				<div class="alert alert-info">
+					<p>
+						<i class="fa fa-info-circle" aria-hidden="true"></i> 
+						<?php echo $this->translate('No updates found'); ?>
+					</p>
+				</div>
+			</div>
+			<?php else: ?>
+			<div class="box-body  no-padding">
+				<div class="row">
+					<div class="col-xs-12">
+						<table class="table table-bordered table-hover table-striped table-condensed">
+							<thead>
+								<tr>
+									<th><?php echo $this->translate("Date"); ?></th>
+									<th><?php echo $this->translate("Module"); ?></th>
+									<th><?php echo $this->translate("Version"); ?></th>
+									<th><?php echo $this->translate("Status"); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php foreach($this->paginator as $entity): ?>
+								<tr <?php if($entity->getUpdateStatus() != "OK"):?>class="text-danger" <?php endif;?>>
+									<td><?php echo date($this->appConfig()->getConfigDateLong(), $entity->getUpdateDateCheck()); ?></td>
+									<td><a href="<?php echo $this->url("module-view", array("id" => $entity->getModuleId())); ?>" title="<?php echo $this->translate("View")?>">
+										<?php echo $entity->getModuleEntity()->getModuleName(); ?>
+										</a>
+									</td>
+									<td><?php echo $entity->getModuleVersion(); ?></td>
+									<td><?php echo $entity->getUpdateStatus(); ?></td>
+								</tr>
+							<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 text-center">
+						<?php echo $this->Paginator(
+							$this->itemCountPerPage, 
+							$this->itemCount, 
+							$this->pageCount, 
+                            $this->page, 
+                            $this->routeParams,
+                            $this->queryParams);
+                        ?>
+					</div>
+				</div>
+			</div>
+			<?php endif;?> 
+		</div>
+	</div>
+</div>
